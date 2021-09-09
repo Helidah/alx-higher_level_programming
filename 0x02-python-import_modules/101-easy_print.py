@@ -1,2 +1,2 @@
 #!/usr/bin/python3
-import printpythoniscool_101
+import py_print
