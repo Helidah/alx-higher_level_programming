@@ -1,4 +1,4 @@
-#HIGHER LEVEL PROGRAMMING
+# HIGHER LEVEL PROGRAMMING
 
 Welcome to the Python world!
 
@@ -11,4 +11,5 @@ Like C, Python also has a linter / style guide like Betty, called PEP8, also now
 Enjoy!
 
 - Guillaume, CTO at Holberton
-Helidah wagude
+
+i look forward to learning python -Helidah wagude
