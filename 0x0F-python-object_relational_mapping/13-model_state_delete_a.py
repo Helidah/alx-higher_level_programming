@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-return state id given state name; SQL injection free
-parameters given to script: username, password, database, state name to match
+delete from table states with names containing letter 'a'
+parameters given to script: username, password, database
 """
 
 from sys import argv
@@ -22,10 +22,10 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query python instance in database state id given state name
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state:
-        print("{:d}".format(state.id))
-    else:
-        print("Not found")
+    # find all appropriate states to be deleted
+    states = session.query(State).filter(State.name.like('%a%')).all()
+    for s in states:
+        session.delete(s)
+
+    session.commit()
     session.close()

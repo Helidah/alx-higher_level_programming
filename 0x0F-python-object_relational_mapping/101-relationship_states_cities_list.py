@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """
-return state id given state name; SQL injection free
-parameters given to script: username, password, database, state name to match
+use table relationship to access and print city and state
+parameters given to script: username, password, database
 """
 
 from sys import argv
-from model_state import Base, State
+from relationship_state import Base, State
+from relationship_city import City
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -22,10 +23,11 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query python instance in database state id given state name
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state:
-        print("{:d}".format(state.id))
-    else:
-        print("Not found")
+    # use table relationship to access and print city and state
+    rows = session.query(State).order_by(State.id).all()
+    for state in rows:
+        print("{}: {}".format(state.id, state.name))
+        for city in state.cities:
+            print("    {}: {}".format(city.id, city.name))
+
     session.close()

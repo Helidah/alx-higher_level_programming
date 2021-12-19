@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """
-return state id given state name; SQL injection free
-parameters given to script: username, password, database, state name to match
+create state "California" with city attribute "San Francisco"
+parameters given to script: username, password, database
 """
 
 from sys import argv
-from model_state import Base, State
+from relationship_state import Base, State
+from relationship_city import City
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -22,10 +23,13 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query python instance in database state id given state name
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state:
-        print("{:d}".format(state.id))
-    else:
-        print("Not found")
+    # create state "California" with city attribute "San Francisco"
+    new_s = State(name="California")
+    new_c = City(name="San Francisco")
+    new_s.cities.append(new_c)
+
+    session.add(new_s)
+    session.add(new_c)
+
+    session.commit()
     session.close()

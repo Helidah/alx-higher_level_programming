@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-return state id given state name; SQL injection free
-parameters given to script: username, password, database, state name to match
+update state: given id, change state name
+parameters given to script: username, password, database
 """
 
 from sys import argv
@@ -22,10 +22,9 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query python instance in database state id given state name
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state:
-        print("{:d}".format(state.id))
-    else:
-        print("Not found")
+    # find and update state (run #7 to see table printed)
+    state = session.query(State).filter_by(id=2).first()
+    state.name = "New Mexico"
+
+    session.commit()
     session.close()

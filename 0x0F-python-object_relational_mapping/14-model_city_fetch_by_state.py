@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """
-return state id given state name; SQL injection free
-parameters given to script: username, password, database, state name to match
+return all cities from database via python
+parameters given to script: username, password, database
 """
 
 from sys import argv
 from model_state import Base, State
+from model_city import City
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -22,10 +23,9 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query python instance in database state id given state name
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state:
-        print("{:d}".format(state.id))
-    else:
-        print("Not found")
+    # query multiple tables in database and print info from tables
+    for q in session.query(State.name, City.id, City.name).filter(
+            State.id == City.state_id).order_by(City.id):
+        print("{:s}: ({:d}) {:s}".format(q[0], q[1], q[2]))
+
     session.close()
